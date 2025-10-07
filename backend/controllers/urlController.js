@@ -1,7 +1,7 @@
 const Url = require('../models/Url');
 const generateCode = require('../utils/generateCode');
 
-// validate URL with WHATWG URL
+// validate URL
 function isValidUrl(urlString) {
   try {
     new URL(urlString);
@@ -13,7 +13,7 @@ function isValidUrl(urlString) {
 
 const createShortUrl = async (req, res) => {
   const { longUrl } = req.body;
-  const baseUrl = process.env.BASE_URL;
+  const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
 
   if (!longUrl) {
     return res.status(400).json({ message: 'longUrl is required' });
@@ -43,7 +43,6 @@ const createShortUrl = async (req, res) => {
       attempts++;
     }
     if (found) {
-      // extreme unlikely case
       shortCode = generateCode(8);
     }
 

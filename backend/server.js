@@ -6,21 +6,21 @@ const urlRoutes = require('./routes/urlRoutes');
 const { redirectToLongUrl } = require('./controllers/urlController');
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 
 // connect to DB
-connectDB(process.env.MONGO_URI);
+connectDB(process.env.MONGO_URI || 'mongodb://localhost:27017/QuickLink');
 
 // API routes
 app.use('/api/url', urlRoutes);
 
-// Redirect route (keep this AFTER API routes)
+// Redirect route
 app.get('/:shortCode', redirectToLongUrl);
 
-// basic root
+
 app.get('/', (req, res) => {
   res.send('QuickLink backend is running');
 });
